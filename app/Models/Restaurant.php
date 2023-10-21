@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Restaurant extends Model
 {
@@ -29,10 +31,31 @@ class Restaurant extends Model
         'status' => 'boolean',
     ];
 
+    protected static function booted(): void
+    {
+        if (auth()->check() && auth()->user()->hasRole([
+            User::ROLE_RESTAURANT_OWNER,
+        ])) {
+            static::addGlobalScope('restaurant', function (Builder $query) {
+                $query->whereBelongsTo(auth()->user());
+            });
+        }
+    }
+
+    public static function getTenantId(): int
+    {
+        return User::getTenant()?->id ?? 0;
+    }
+
     /* Relationships */
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function foodCategories(): HasMany
+    {
+        return $this->hasMany(FoodCategory::class);
     }
 }
