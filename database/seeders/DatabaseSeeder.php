@@ -12,7 +12,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        // Admin
+        \App\Models\User::factory()->create([
+            'name' => 'Restaurant Admin',
+            'email' => 'restaurant@app.com',
+        ]);
+
+        \App\Models\User::factory(10)->create();
+
+        $this->call([
+            RestaurantSeeder::class,
+        ]);
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
