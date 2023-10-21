@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Http\Middleware\RestaurantTenantScopes;
 use App\Models\Restaurant;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -35,6 +36,9 @@ class RestaurantPanelProvider extends PanelProvider
             // Restaurant tenant
             ->tenant(Restaurant::class)
             ->tenantRoutePrefix('restaurant')
+            ->tenantMiddleware([
+                RestaurantTenantScopes::class,
+            ], isPersistent: true)
 
             ->colors([
                 'primary' => Color::Purple,

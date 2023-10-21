@@ -33,13 +33,13 @@ class Restaurant extends Model
 
     protected static function booted(): void
     {
-        if (auth()->check() && auth()->user()->hasRole([
-            User::ROLE_RESTAURANT_OWNER,
-        ])) {
-            static::addGlobalScope('restaurant', function (Builder $query) {
-                $query->whereBelongsTo(auth()->user());
-            });
-        }
+        // if (auth()->check() && auth()->user()->hasRole([
+        //     User::ROLE_RESTAURANT_OWNER,
+        // ])) {
+        //     static::addGlobalScope('restaurant', function (Builder $query) {
+        //         $query->whereBelongsTo(auth()->user());
+        //     });
+        // }
     }
 
     public static function getTenantId(): int

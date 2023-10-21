@@ -5,9 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class FoodCategory extends Model
+class FoodItem extends Model
 {
     use HasFactory;
 
@@ -17,8 +16,10 @@ class FoodCategory extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'slug', 'image', 'status',
+        'food_category_id', 'name', 'slug', 'description', 'image', 'is_best_seller',
+        'is_vegetarian', 'price', 'status',
     ];
+
 
     /**
      * The attributes that should be cast.
@@ -26,18 +27,16 @@ class FoodCategory extends Model
      * @var array<string, string>
      */
     protected $casts = [
+        'is_best_seller' => 'boolean',
+        'is_vegetarian' => 'boolean',
         'status' => 'boolean',
+        'price' => 'double',
     ];
 
     /* Relationships */
 
-    public function restaurant(): BelongsTo
+    public function foodCategory(): BelongsTo
     {
-        return $this->belongsTo(Restaurant::class);
-    }
-
-    public function foodItems(): HasMany
-    {
-        return $this->hasMany(FoodItem::class);
+        return $this->belongsTo(FoodCategory::class);
     }
 }
