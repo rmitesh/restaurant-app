@@ -12,6 +12,12 @@ class RestaurantSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Restaurant::factory(10)->create();
+        $restaurants = \App\Models\Restaurant::factory(20)->create();
+
+        foreach ($restaurants as $restaurant) {
+            $restaurant->users()->sync(
+                \App\Models\Restaurant::all('id')->random()
+            );
+        }
     }
 }

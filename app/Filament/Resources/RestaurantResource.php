@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\RestaurantResource\Pages;
 use App\Filament\Resources\RestaurantResource\RelationManagers;
 use App\Models\Restaurant;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -28,22 +29,16 @@ class RestaurantResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Fieldset::make('Owner Details')
-                    ->relationship('user')
-                    ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->placeholder('Name')
-                            ->autofocus()
-                            ->maxLength(60)
-                            ->required(),
-
-                        Forms\Components\TextInput::make('email')
-                            ->placeholder('Email')
-                            ->email()
-                            ->unique(ignoreRecord: true)
-                            ->maxLength(60)
-                            ->required(),
-                    ]),
+                Forms\Components\Select::make('user_id')
+                    ->label('Owner')
+                    ->searchable()
+                    ->placeholder('Choose Owner')
+                    ->preload()
+                    ->relationship('users', 'name', function ($query) {
+                        $query->role([
+                            User::ROLE_RESTAURANT_OWNER,
+                        ]);
+                    }),
 
                 Forms\Components\Fieldset::make('Restaurant Details')
                     ->schema([
@@ -75,7 +70,6 @@ class RestaurantResource extends Resource
                             ->maxLength(50),
 
                         Forms\Components\Toggle::make('status'),
-
                     ]),
             ]);
     }
@@ -88,8 +82,9 @@ class RestaurantResource extends Resource
                     ->sortable()
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('user.name')
+                Tables\Columns\TextColumn::make('users.name')
                     ->label('Owner Name')
+                    ->placeholder('N/A')
                     ->sortable()
                     ->searchable(),
 

@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Restaurant extends Model
@@ -19,7 +19,17 @@ class Restaurant extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_id', 'name', 'logo', 'fssai_number', 'phone_number', 'status'
+        'name',
+        'address',
+        'area',
+        'landmarks',
+        'latitude',
+        'longitude',
+        'is_featured',
+        'logo',
+        'fssai_number',
+        'phone_number',
+        'status',
     ];
 
     /**
@@ -28,6 +38,9 @@ class Restaurant extends Model
      * @var array<string, string>
      */
     protected $casts = [
+        'latitude' => 'double',
+        'longitude' => 'double',
+        'is_featured' => 'boolean',
         'status' => 'boolean',
     ];
 
@@ -49,9 +62,9 @@ class Restaurant extends Model
 
     /* Relationships */
 
-    public function user(): BelongsTo
+    public function users(): BelongsToMany
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(User::class);
     }
 
     public function foodCategories(): HasMany

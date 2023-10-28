@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\FoodCategory;
+use App\Models\Restaurant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -24,6 +25,7 @@ class FoodItemFactory extends Factory
         $foodName = $faker->foodName();
 
         return [
+            'restaurant_id' => Restaurant::all('id')->random()->id,
             'food_category_id' => FoodCategory::all('id')->random()->id,
             'name' => $foodName,
             'slug' => Str::slug($foodName),

@@ -35,7 +35,8 @@ class RestaurantPanelProvider extends PanelProvider
 
             // Restaurant tenant
             ->tenant(Restaurant::class)
-            ->tenantRoutePrefix('restaurant')
+            // ->topNavigation()
+            // ->tenantRoutePrefix('restaurant')
             ->tenantMiddleware([
                 RestaurantTenantScopes::class,
             ], isPersistent: true)

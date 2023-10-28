@@ -19,8 +19,14 @@ class RestaurantFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::all('id')->random()->id,
             'name' => ucwords(fake()->word()) . ' Restaurant',
+            'address' => fake()->address(),
+            'area' => fake()->streetName(),
+            'latitude' => fake()->latitude($min = -90, $max = 90),
+            'longitude' => fake()->longitude($min = -180, $max = 180),
+            
+            'is_featured' => fake()->boolean(),
+
             'logo' => fake()->imageUrl(640, 480, 'animals', true),
             'fssai_number' => fake()->numberBetween(11111111111111, 99999999999999),
             'phone_number' => (int) fake()->phoneNumber(),
